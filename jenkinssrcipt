@@ -1,8 +1,8 @@
 pipeline {
    agent { label 'slave1' }
- environment {	
-		DOCKERHUB_CREDENTIALS=credentials('dockerloginid')
-	}
+
+environment {	
+		DOCKERHUB_CREDENTIALS=credentials('dockerloginid') }
 
   stage('SCM_Checkout') {
             steps {
