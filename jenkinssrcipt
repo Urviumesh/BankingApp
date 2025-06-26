@@ -1,6 +1,8 @@
 pipeline {
    agent { label 'slave1' }
-
+       environment {	
+		DOCKERHUB_CREDENTIALS=credentials('dockerloginid')
+	}
     stages {
         stage('SCM_Checkout') {
             steps {
@@ -18,7 +20,7 @@ pipeline {
             steps {
                 echo 'Perform Docker Build'
 				sh "docker build -t urvi11umesh/bankfinapp-app:${BUILD_NUMBER} ."
-				sh "docker tag loksaieta/sa-ai-webapp:${BUILD_NUMBER} urvi11umesh/bankfinapp-app:latest"
+				sh "docker tag urvi11umesh/bankfinapp-app:${BUILD_NUMBER} urvi11umesh/bankfinapp-app:latest"
 				sh 'docker image list'
             }
         }
