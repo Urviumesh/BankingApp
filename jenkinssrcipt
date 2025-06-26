@@ -1,6 +1,10 @@
 pipeline {
    agent { label 'slave1' }
-        stage('SCM_Checkout') {
+ environment {	
+		DOCKERHUB_CREDENTIALS=credentials('dockerloginid')
+	}
+
+  stage('SCM_Checkout') {
             steps {
                 echo 'Perform SCM Checkout'
                git 'https://github.com/Urviumesh/star-agile-banking-finance.git'
@@ -15,8 +19,8 @@ pipeline {
         stage('Docker Build') {
             steps {
                 echo 'Perform Docker Build'
-				sh "docker build -t urvi11umesh/bankfinapp-app:${BUILD_NUMBER} ."
-				sh "docker tag urvi11umesh/bankfinapp-app:${BUILD_NUMBER} urvi11umesh/bankfinapp-app:latest"
+				sh "docker build -t urvi11umesh/bankfin-app:${BUILD_NUMBER} ."
+				sh "docker tag urvi11umesh/bankfin-app:${BUILD_NUMBER} urvi11umesh/bankfin-app:latest"
 				sh 'docker image list'
             }
         }
@@ -30,7 +34,7 @@ pipeline {
         stage('Publish the Image to Dockerhub') {
             steps {
                 echo 'Publish to DockerHub'
-				sh "docker push urvi11umesh/bankfinapp-app:latest"                
+				sh "docker push urvi11umesh/bankfin-app:latest"                
             }
         }
         stage('Deploy to Kubernetes Cluster') {
