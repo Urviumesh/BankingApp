@@ -1,9 +1,5 @@
 pipeline {
-    agent { label 'slave1' }	
-
-    tools {
-        maven "maven_3.6.3"
-    }
+    agent { label 'slave1' }
 
 	environment {	
 		DOCKERHUB_CREDENTIALS=credentials('dockerloginid')
@@ -17,7 +13,7 @@ pipeline {
 		}
         stage('Maven Build') {
             steps {
-                sh "mvn -Dmaven.test.failure.ignore=true clean package"
+             sh 'mvn clean package'
             }
 		}
        stage("Docker build"){
