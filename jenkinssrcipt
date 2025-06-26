@@ -17,8 +17,8 @@ pipeline {
         stage('Docker Build') {
             steps {
                 echo 'Perform Docker Build'
-				sh "docker build -t urvi11umesh/:${BUILD_NUMBER} ."
-				sh "docker tag loksaieta/sa-ai-webapp:${BUILD_NUMBER} loksaieta/sa-ai-webapp:latest"
+				sh "docker build -t urvi11umesh/bankfinapp-app:${BUILD_NUMBER} ."
+				sh "docker tag loksaieta/sa-ai-webapp:${BUILD_NUMBER} urvi11umesh/bankfinapp-app:latest"
 				sh 'docker image list'
             }
         }
@@ -32,14 +32,13 @@ pipeline {
         stage('Publish the Image to Dockerhub') {
             steps {
                 echo 'Publish to DockerHub'
-				sh "docker push loksaieta/sa-ai-webapp:latest"                
+				sh "docker push urvi11umesh/bankfinapp-app:latest"                
             }
         }
         stage('Deploy to Kubernetes Cluster') {
             steps {
 				script {
-				sshPublisher(publishers: [sshPublisherDesc(configName: 'Kubernetes_Master', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'kubectl apply -f kdeploy.yaml', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '.', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '*.yaml')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
-			}				          
+				
             }
         }
     }
